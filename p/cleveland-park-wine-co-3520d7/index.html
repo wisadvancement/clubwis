@@ -42,15 +42,14 @@ a{color:inherit}
 .proto .wrap{padding-block:8px;display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between}
 
 /* hero */
-.hero{background:var(--navy);color:var(--navy-ink);position:relative;overflow:hidden}
-.hero .wrap{padding-block:56px 64px;display:grid;gap:18px;position:relative;z-index:1}
-.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;opacity:.85}
-.hero h1{font-size:clamp(44px,8vw,84px);line-height:1;letter-spacing:-.01em}
-.hero h1 em{font-style:italic;color:var(--gold)}
-.prepared{font-size:18px;opacity:.92}
+.hero{background:#0f4579;color:#fff}
+.hero-art{display:block;width:100%;height:clamp(330px,40vw,540px);max-width:100%;object-fit:cover;object-position:center 48%}
+.hero-bar{background:var(--navy);color:var(--navy-ink)}
+.hero-bar .wrap{padding-block:16px;display:flex;flex-wrap:wrap;gap:6px 24px;justify-content:space-between;align-items:baseline}
+.prepared{font-size:17px}
 .prepared strong{font-weight:600}
-.facts{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
-.branch{position:absolute;right:-40px;bottom:-30px;width:min(520px,80vw);opacity:.22;pointer-events:none}
+.facts{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 section{padding-block:56px}
 .label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--gold);margin:0 0 10px}
@@ -142,21 +141,12 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
 
 
 <header class="hero">
-  <svg class="branch" viewBox="0 0 520 300" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-    <path d="M10 290 C120 230 220 210 330 150 S470 60 515 20"/>
-    <path d="M120 238 C110 205 120 180 145 160"/><path d="M215 205 C230 175 260 160 290 158"/>
-    <path d="M330 150 C320 115 330 90 360 72"/><path d="M420 100 C445 95 470 100 490 115"/>
-    <ellipse cx="150" cy="152" rx="16" ry="8" transform="rotate(-40 150 152)"/>
-    <ellipse cx="300" cy="156" rx="16" ry="8" transform="rotate(5 300 156)"/>
-    <ellipse cx="368" cy="64" rx="16" ry="8" transform="rotate(-45 368 64)"/>
-    <ellipse cx="500" cy="122" rx="16" ry="8" transform="rotate(35 500 122)"/>
-  </svg>
-  <div class="wrap">
-    <div class="eyebrow">Sponsorship proposal · Club WIS 2027</div>
-    <h1>Club WIS<br><em>Cocktails for a Cause</em></h1>
-    <div class="prepared">Prepared for <strong>Cleveland Park Wine Co.</strong></div>
-    <div class="facts"><span>Friday, April 17, 2027</span><span>Tregaron campus</span><span>Benefiting financial aid</span></div>
-  </div>
+  <h1 class="sr-only">Club WIS: Cocktails for a Cause</h1>
+  <img class="hero-art" src="../../assets/clubwis-hero.jpg" alt="Club WIS: Cocktails for a Cause. An evening to support financial aid at WIS. Doors open April 17, 2027." width="1800" height="1060">
+  <div class="hero-bar"><div class="wrap">
+    <div class="prepared">Sponsorship proposal prepared for <strong>Cleveland Park Wine Co.</strong></div>
+    <div class="facts"><span>Friday, April 17, 2027</span><span>Tregaron campus</span></div>
+  </div></div>
 </header>
 
 <main>
