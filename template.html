@@ -45,10 +45,12 @@ a{color:inherit}
 .hero{background:#0f4579;color:#fff}
 .hero-art{display:block;width:100%;height:clamp(330px,40vw,540px);max-width:100%;object-fit:cover;object-position:center 48%}
 .hero-bar{background:var(--navy);color:var(--navy-ink)}
-.hero-bar .wrap{padding-block:16px;display:flex;flex-wrap:wrap;gap:6px 24px;justify-content:space-between;align-items:baseline}
-.prepared{font-size:17px}
-.prepared strong{font-weight:600}
-.facts{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.hero-bar .wrap{padding-block:24px 26px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.prepared{display:flex;flex-direction:column;align-items:center;gap:6px}
+.eyebrow,.facts{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.prepared strong{font-family:var(--display);font-weight:500;font-size:clamp(24px,3.6vw,32px);line-height:1.15;text-wrap:balance}
+.facts{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 0}
+.facts span+span::before{content:"·";margin:0 .75em}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 section{padding-block:56px}
@@ -144,7 +146,7 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
   <h1 class="sr-only">Club WIS: Cocktails for a Cause</h1>
   <img class="hero-art" src="../../assets/clubwis-hero.jpg" alt="Club WIS: Cocktails for a Cause. An evening to support financial aid at WIS. Doors open April 17, 2027." width="1800" height="1060">
   <div class="hero-bar"><div class="wrap">
-    <div class="prepared">Sponsorship proposal prepared for <strong>{{COMPANY}}</strong></div>
+    <div class="prepared"><span class="eyebrow">Sponsorship proposal prepared for</span><strong>{{COMPANY}}</strong></div>
     <div class="facts"><span>Friday, April 17, 2027</span><span>Tregaron campus</span></div>
   </div></div>
 </header>
