@@ -63,6 +63,7 @@ p{margin:0 0 14px}
 .letter p{font-size:18px}
 .sig{margin-top:22px;display:grid;gap:2px}
 .sig b{font-family:var(--display);font-size:22px;font-weight:500}
+.letter .ps{margin-top:22px;font-size:17px;font-style:italic;color:var(--muted)}
 
 /* preview mocks */
 .mocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px;margin-top:24px}
@@ -153,11 +154,13 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
 
 <main>
   <section class="wrap narrow letter">
-    <p class="label">A note from Marisa</p>
+    <p class="label">A note from Suzanna</p>
     <p>Dear {{FIRST}},</p>
-    <p>Our spring benefit returns on April 17 with a new name: <strong>Club WIS: Cocktails for a Cause</strong>, an evening of cocktails, dancing and auction at Tregaron. It’s our biggest fundraiser of the year for financial aid.</p>
-    <p>{{RELATIONSHIP}} Below you can see exactly how your business would appear and choose the level that fits.</p>{{CUSTOM_NOTE}}
-    <div class="sig"><b>Marisa G. Alford ’01</b><span class="muted">Director of Advancement, Washington International School</span></div>
+    <p>{{THANKS}}</p>
+    <p>On 17 April, our spring benefit returns as <strong>Club WIS: Cocktails for a Cause</strong> — an evening of cocktails, dancing and auction at Tregaron. It remains our most important fundraiser for financial aid, which brings students of every background and nationality into the same classrooms.</p>{{CONNECTION}}
+    <p>{{ASK}} Below you can see how your business would appear on the night and choose the level that suits you.</p>
+    <p>With thanks,</p>
+    <div class="sig"><b>Suzanna Jemsby</b><span class="muted">Head of School, Washington International School</span></div>{{PS}}
   </section>
 
   <section class="wrap" aria-labelledby="see">

@@ -7,7 +7,11 @@ The pages collect no data. All payments go through BetterUnite's checkout.
 1. Add a row to `vendors.csv`. Leave `slug` blank; the build fills it in once and keeps it.
    - `last_level` / `recommended`: platinum, gold, silver or bronze (`last_level` blank for new sponsors)
    - `logo`: filename of an image you've put in `logos/` (blank = initials monogram)
-   - `custom_note`: optional extra sentence for the letter
+   - `years`: consecutive years sponsoring (blank or 1 = "last spring")
+   - `thanks_note`: **required** — one specific sentence thanking them for last year. Vendors without one are skipped.
+   - `connection`: optional — a WIS family, alumni or neighbourhood tie. Blank drops the paragraph.
+   - `ps`: optional — a personal postscript. Blank drops it.
+   - Letter copy is in Suzanna's voice: use British spelling in these fields.
    - `link_<level>`: optional level-specific BetterUnite links (blank = main Club WIS page)
 2. Run `python build.py`
 3. Commit and push. `links.csv` lists each vendor's URL for Megan's outreach.

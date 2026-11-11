@@ -27,6 +27,27 @@ def logo_html(row, esc_company):
     return f'<div class="logo" aria-hidden="true">{html.escape(initials(row["company"]))}</div>'
 
 
+WORDS = ["", "", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
+
+
+def years_phrase(raw):
+    """'3' -> 'for the past three years'; blank or 1 -> 'last spring'."""
+    try:
+        n = int(raw)
+    except ValueError:
+        return "last spring"
+    if n < 2:
+        return "last spring"
+    return f"for the past {WORDS[n] if n < len(WORDS) else n} years"
+
+
+def sentence(text):
+    text = text.strip()
+    if text and text[-1] not in ".!?”\"":
+        text += "."
+    return html.escape(text)
+
+
 def main():
     rows = list(csv.DictReader(open(ROOT / "vendors.csv", encoding="utf-8-sig")))
     changed = False
@@ -43,11 +64,19 @@ def main():
         rec = (row.get("recommended", "").strip().lower() or last or "silver")
         assert rec in LEVELS, f"{company}: recommended level must be one of {LEVELS}"
         esc = html.escape(company)
-        if last:
-            relationship = f"{esc} sponsored at the {last.title()} level last year, and we’d love to have you back."
-        else:
-            relationship = f"We’d love to welcome {esc} as a sponsor this year."
-        note = row.get("custom_note", "").strip()
+        # Required for the renewal letter: one specific sentence of thanks.
+        thanks_note = row.get("thanks_note", "").strip()
+        if not thanks_note:
+            print(f"SKIP   {company:35s} needs a thanks_note (page left as is)")
+            if (ROOT / "p" / row["slug"] / "index.html").exists():
+                out_links.append({"company": company, "url": f"{SITE}/p/{row['slug']}/"})
+            continue
+        thanks = f"Thank you for standing with WIS {years_phrase(row.get('years', '').strip())}. {sentence(thanks_note)}"
+        # Optional: drop out entirely when blank.
+        connection = row.get("connection", "").strip()
+        ps = row.get("ps", "").strip()
+        back = " back" if last else ""
+        ask = f"We would be delighted to welcome {esc}{back} as a {rec.title()} Patron."
         vendor = {
             "company": company,
             "first": row.get("first_name", "").strip() or "friends",
@@ -58,8 +87,10 @@ def main():
         page = (TEMPLATE
                 .replace("{{COMPANY}}", esc)
                 .replace("{{FIRST}}", html.escape(vendor["first"]))
-                .replace("{{RELATIONSHIP}}", relationship)
-                .replace("{{CUSTOM_NOTE}}", f"<p>{html.escape(note)}</p>" if note else "")
+                .replace("{{THANKS}}", thanks)
+                .replace("{{CONNECTION}}", f"\n    <p>{sentence(connection)}</p>" if connection else "")
+                .replace("{{ASK}}", ask)
+                .replace("{{PS}}", f"\n    <p class=\"ps\">P.S. {sentence(ps)}</p>" if ps else "")
                 .replace("{{LOGO}}", logo_html(row, esc))
                 .replace("{{LOGO_SLIDE}}", logo_html(row, esc))
                 .replace("{{VENDOR_JSON}}", json.dumps(vendor, ensure_ascii=False).replace("</", "<\\/")))
