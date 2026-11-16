@@ -6,7 +6,7 @@
  *   2. Replace the editor's contents with this file and save.
  *   3. Deploy → New deployment → type "Web app".
  *        Execute as: Me    Who has access: Anyone
- *   4. Copy the web app URL into LOG_URL at the top of build.py, rebuild and push.
+ *   4. Copy the web app URL into LOG_URL at the top of build.py, rebuild, and push.
  *
  * The page sends only: page slug, company, level, benefits choice, button clicked.
  * Amounts are looked up here, not trusted from the page.
