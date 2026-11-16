@@ -198,13 +198,11 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
           <h3 id="selTitle"></h3>
           <p class="muted" id="selSummary"></p>
           <fieldset class="benefits" id="benefits">
-            <legend>Your benefits</legend>
-            <label class="opt"><input type="radio" name="ben" value="all" checked><span>Keep all benefits<small id="optAllNote"></small></span><b data-ded="all"></b></label>
-            <label class="opt" data-needs-ad><input type="radio" name="ben" value="noad"><span data-lbl="noad"></span><b data-ded="noad"></b></label>
-            <label class="opt" data-needs-ad><input type="radio" name="ben" value="adonly"><span data-lbl="adonly"></span><b data-ded="adonly"></b></label>
-            <label class="opt"><input type="radio" name="ben" value="none"><span>Waive all benefits<small>Full amount is tax-deductible</small></span><b data-ded="none"></b></label>
+            <legend>Optional: waive benefits</legend>
+            <label class="opt" data-needs-ad><input type="checkbox" name="ben" value="adonly"><span data-lbl="adonly"></span><b data-ded="adonly"></b></label>
+            <label class="opt"><input type="checkbox" name="ben" value="none"><span>Waive all benefits<small>Full amount is tax-deductible</small></span><b data-ded="none"></b></label>
           </fieldset>
-          <p class="muted" style="font-size:13px;margin-top:10px">Teachers attend in your name and your auction-site listing stays at every option. Amounts shown are tax-deductible. We confirm any waiver in writing.</p>
+          <p class="muted" style="font-size:14px;margin-top:10px" id="dedLine"></p>
         </div>
         <div class="actions">
           <a class="btn primary" id="sponsorBtn" href="https://app.betterunite.com/clubwis" target="_blank" rel="noopener">Sponsor on BetterUnite</a>
@@ -268,13 +266,13 @@ const rec=l=>l.perks.some(p=>p.includes("VIP"));
 const tix=l=>rec(l)?"tickets and VIP reception":"tickets";
 const all=l=>[ "tickets", rec(l)?"VIP reception":null, l.ad?"event ad":null ].filter(Boolean).join(", ").replace(/, ([^,]*)$/," and $1");
 const OPTS={
- all:   {ded:l=>l.ded,    lbl:l=>"Keep all benefits", mail:l=>""},
- noad:  {ded:l=>l.ded+AD, lbl:l=>`Skip the ad, keep ${tix(l)}`, mail:l=>" We'd like to waive our event ad."},
- adonly:{ded:l=>l.amt-AD, lbl:l=>`Waive ${tix(l)}, keep the ad`, mail:l=>` We'd like to waive our event ${tix(l)} and keep our event ad.`},
+ all:   {ded:l=>l.ded,    mail:l=>""},
+ adonly:{ded:l=>l.amt-AD, lbl:l=>`Keep the ad, waive ${tix(l)}`, mail:l=>` We'd like to waive our event ${tix(l)} and keep our event ad.`},
  none:  {ded:l=>l.amt,    lbl:l=>"Waive all benefits", mail:l=>` We'd like to waive all benefits (${all(l)}) for a full deduction.`}
 };
-const ben=()=>document.querySelector('input[name="ben"]:checked').value;
-document.querySelectorAll('input[name="ben"]').forEach(r=>r.addEventListener("change",render));
+const boxes=[...document.querySelectorAll('input[name="ben"]')];
+const ben=()=>(boxes.find(b=>b.checked)||{value:"all"}).value;
+boxes.forEach(b=>b.addEventListener("change",()=>{if(b.checked)boxes.forEach(o=>{if(o!==b)o.checked=false});render()}));
 function render(){
   const l=LEVELS.find(x=>x.id===sel);
   document.querySelectorAll(".level").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===sel));
@@ -282,10 +280,12 @@ function render(){
   document.getElementById("selSummary").textContent=l.sum;
   document.querySelectorAll("[data-tier]").forEach(e=>e.textContent=l.tier);
   document.querySelectorAll("[data-needs-ad]").forEach(o=>{o.hidden=!l.ad});
-  if(!l.ad&&(ben()==="noad"||ben()==="adonly"))document.querySelector('input[name="ben"][value="all"]').checked=true;
+  if(!l.ad&&ben()==="adonly")boxes.forEach(b=>b.checked=false);
   Object.keys(OPTS).forEach(k=>{const e=document.querySelector(`[data-ded="${k}"]`);if(e)e.textContent=fmt(OPTS[k].ded(l))});
   document.querySelectorAll("[data-lbl]").forEach(e=>e.textContent=OPTS[e.dataset.lbl].lbl(l));
-  const a=all(l);document.getElementById("optAllNote").textContent=a[0].toUpperCase()+a.slice(1);
+  document.getElementById("dedLine").textContent=ben()==="all"
+    ?`Tax-deductible amount: ${fmt(l.ded)} with all benefits. Teachers attend in your name and your auction listing stays either way.`
+    :`Tax-deductible amount: ${fmt(OPTS[ben()].ded(l))}. Teachers still attend in your name and your auction listing stays. We’ll confirm the waiver in writing.`;
   const sb=document.getElementById("sponsorBtn");sb.textContent=`Sponsor at ${l.tier} on BetterUnite`;sb.href=(VENDOR.links&&VENDOR.links[l.id])||"https://app.betterunite.com/clubwis";
   const subj=encodeURIComponent(`Club WIS ${l.tier} sponsorship pledge: ${VENDOR.company}`);
   const body=encodeURIComponent(`Hi Megan,\n\n${VENDOR.company} would like to pledge a ${l.tier} sponsorship (${fmt(l.amt)}) for Club WIS on April 17, 2027, payable by June 30, 2027.${OPTS[ben()].mail(l)}\n\nThanks,\n${VENDOR.first}`);
