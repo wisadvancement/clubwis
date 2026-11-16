@@ -20,9 +20,9 @@ const LEVELS = {
 };
 const AD_VALUE = 500;
 const BENEFITS = {
-  all:    { label: 'Keep all benefits',            ded: l => l.ded },
-  adonly: { label: 'Keep ad, waive other benefits', ded: l => l.amt - AD_VALUE },
-  none:   { label: 'Waive all benefits',            ded: l => l.amt },
+  all:    { label: 'Nothing (keeps all benefits)',     ded: l => l.ded },
+  adonly: { label: 'All benefits except the ad',       ded: l => l.amt - AD_VALUE },
+  none:   { label: 'All benefits (full deduction)',    ded: l => l.amt },
 };
 const ACTIONS = { betterunite: 'Sponsor on BetterUnite', pledge: 'Pledge email' };
 
