@@ -8,7 +8,7 @@ import csv, html, json, re, secrets, pathlib
 SITE = "https://wisadvancement.github.io/clubwis"   # change if the repo name differs
 LEVELS = ["platinum", "gold", "silver", "bronze"]
 # Apps Script web app URL that logs button clicks to the responses sheet (see apps-script/). Blank = no logging.
-LOG_URL = ""
+LOG_URL = "https://script.google.com/macros/s/AKfycbzTCr3nESVydYtNYm0pWtOHgDPiYCji6v7qtDyoZH7Tdi5m6RtcPtnjqM5nIvRy_pW3/exec"
 ROOT = pathlib.Path(__file__).parent
 TEMPLATE = (ROOT / "template.html").read_text(encoding="utf-8")
 
