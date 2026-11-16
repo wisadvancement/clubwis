@@ -100,9 +100,14 @@ p{margin:0 0 14px}
 .panel{margin-top:28px;display:grid;grid-template-columns:1.2fr 1fr;gap:24px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:22px}
 @media (max-width:760px){.panel{grid-template-columns:1fr}}
 .panel h3{font-size:26px;margin-bottom:6px}
-.toggle{display:flex;gap:10px;align-items:flex-start;font-size:15px;margin-top:12px}
-.toggle input{width:18px;height:18px;margin-top:3px;accent-color:var(--navy)}
-.toggle[aria-disabled="true"]{opacity:.5}
+.benefits{border:0;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.benefits legend{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--muted);padding:0;margin-bottom:6px}
+.opt{display:grid;grid-template-columns:18px 1fr auto;gap:10px;align-items:start;font-size:15px;line-height:1.4;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer}
+.opt input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--navy)}
+.opt small{display:block;color:var(--muted);font-size:13px}
+.opt b{font-weight:600;white-space:nowrap}
+.opt:has(input:checked){border-color:var(--navy);background:var(--pick)}
+.opt[hidden]{display:none}
 .actions{display:grid;gap:10px;align-content:start}
 .btn{display:block;text-align:center;text-decoration:none;font-weight:600;padding:13px 18px;border-radius:8px;border:1.5px solid var(--navy);font-size:16px}
 .btn.primary{background:var(--navy);color:var(--navy-ink)}
@@ -192,8 +197,14 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
           <p class="label">Your selection</p>
           <h3 id="selTitle"></h3>
           <p class="muted" id="selSummary"></p>
-          <label class="toggle" id="adToggle"><input type="checkbox" id="skipAd"><span>Skip my event ad and add $500 to my tax-deductible amount</span></label>
-          <p class="muted" style="font-size:14px;margin-top:10px" id="dedLine"></p>
+          <fieldset class="benefits" id="benefits">
+            <legend>Your benefits</legend>
+            <label class="opt"><input type="radio" name="ben" value="all" checked><span>Keep all benefits<small id="optAllNote"></small></span><b data-ded="all"></b></label>
+            <label class="opt" data-needs-ad><input type="radio" name="ben" value="noad"><span data-lbl="noad"></span><b data-ded="noad"></b></label>
+            <label class="opt" data-needs-ad><input type="radio" name="ben" value="adonly"><span data-lbl="adonly"></span><b data-ded="adonly"></b></label>
+            <label class="opt"><input type="radio" name="ben" value="none"><span>Waive all benefits<small>Full amount is tax-deductible</small></span><b data-ded="none"></b></label>
+          </fieldset>
+          <p class="muted" style="font-size:13px;margin-top:10px">Teachers attend in your name and your auction-site listing stays at every option. Amounts shown are tax-deductible. We confirm any waiver in writing.</p>
         </div>
         <div class="actions">
           <a class="btn primary" id="sponsorBtn" href="https://app.betterunite.com/clubwis" target="_blank" rel="noopener">Sponsor on BetterUnite</a>
@@ -252,23 +263,32 @@ LEVELS.forEach(l=>{
   b.addEventListener("click",()=>{sel=l.id;render()});
   box.appendChild(b);
 });
-const skip=document.getElementById("skipAd");
-skip.addEventListener("change",render);
+const AD=500;
+const rec=l=>l.perks.some(p=>p.includes("VIP"));
+const tix=l=>rec(l)?"tickets and VIP reception":"tickets";
+const all=l=>[ "tickets", rec(l)?"VIP reception":null, l.ad?"event ad":null ].filter(Boolean).join(", ").replace(/, ([^,]*)$/," and $1");
+const OPTS={
+ all:   {ded:l=>l.ded,    lbl:l=>"Keep all benefits", mail:l=>""},
+ noad:  {ded:l=>l.ded+AD, lbl:l=>`Skip the ad, keep ${tix(l)}`, mail:l=>" We'd like to waive our event ad."},
+ adonly:{ded:l=>l.amt-AD, lbl:l=>`Waive ${tix(l)}, keep the ad`, mail:l=>` We'd like to waive our event ${tix(l)} and keep our event ad.`},
+ none:  {ded:l=>l.amt,    lbl:l=>"Waive all benefits", mail:l=>` We'd like to waive all benefits (${all(l)}) for a full deduction.`}
+};
+const ben=()=>document.querySelector('input[name="ben"]:checked').value;
+document.querySelectorAll('input[name="ben"]').forEach(r=>r.addEventListener("change",render));
 function render(){
   const l=LEVELS.find(x=>x.id===sel);
   document.querySelectorAll(".level").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===sel));
   document.getElementById("selTitle").textContent=`${l.tier} Patron · ${fmt(l.amt)}`;
   document.getElementById("selSummary").textContent=l.sum;
   document.querySelectorAll("[data-tier]").forEach(e=>e.textContent=l.tier);
-  const t=document.getElementById("adToggle");
-  skip.disabled=!l.ad;t.setAttribute("aria-disabled",!l.ad);
-  if(!l.ad)skip.checked=false;
-  document.getElementById("dedLine").textContent=!l.ad
-    ?`Bronze doesn’t include an event ad. Tax-deductible amount: ${fmt(l.ded)}.`
-    :skip.checked?`Ad skipped. Tax-deductible amount: ${fmt(l.ded+500)}.`:`Tax-deductible amount: ${fmt(l.ded)}. Skip the ad to raise it to ${fmt(l.ded+500)}.`;
+  document.querySelectorAll("[data-needs-ad]").forEach(o=>{o.hidden=!l.ad});
+  if(!l.ad&&(ben()==="noad"||ben()==="adonly"))document.querySelector('input[name="ben"][value="all"]').checked=true;
+  Object.keys(OPTS).forEach(k=>{const e=document.querySelector(`[data-ded="${k}"]`);if(e)e.textContent=fmt(OPTS[k].ded(l))});
+  document.querySelectorAll("[data-lbl]").forEach(e=>e.textContent=OPTS[e.dataset.lbl].lbl(l));
+  const a=all(l);document.getElementById("optAllNote").textContent=a[0].toUpperCase()+a.slice(1);
   const sb=document.getElementById("sponsorBtn");sb.textContent=`Sponsor at ${l.tier} on BetterUnite`;sb.href=(VENDOR.links&&VENDOR.links[l.id])||"https://app.betterunite.com/clubwis";
   const subj=encodeURIComponent(`Club WIS ${l.tier} sponsorship pledge: ${VENDOR.company}`);
-  const body=encodeURIComponent(`Hi Megan,\n\n${VENDOR.company} would like to pledge a ${l.tier} sponsorship (${fmt(l.amt)}) for Club WIS on April 17, 2027, payable by June 30, 2027.${l.ad&&skip.checked?" Please skip our event ad.":""}\n\nThanks,\n${VENDOR.first}`);
+  const body=encodeURIComponent(`Hi Megan,\n\n${VENDOR.company} would like to pledge a ${l.tier} sponsorship (${fmt(l.amt)}) for Club WIS on April 17, 2027, payable by June 30, 2027.${OPTS[ben()].mail(l)}\n\nThanks,\n${VENDOR.first}`);
   document.getElementById("pledgeBtn").href=`mailto:megan.connolly@wis.edu?subject=${subj}&body=${body}`;
 }
 document.querySelectorAll(".copy").forEach(btn=>btn.addEventListener("click",()=>{
