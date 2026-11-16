@@ -1,3 +1,4 @@
+/** @OnlyCurrentDoc */
 /**
  * Club WIS sponsor pages → "Club WIS 2027: Sponsor Page Responses" sheet.
  *
