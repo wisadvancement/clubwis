@@ -234,10 +234,10 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
 
 <script>
 const LEVELS=[
- {id:"platinum",tier:"Platinum",nick:"The Life of the Party",amt:10000,ad:true,perks:["Four event tickets","Pre-event VIP reception for four","Tickets for six teachers in your name","Message or ad during the event","Auction website listing"],sum:"4 tickets, VIP reception for 4, and 6 teachers attend in your name."},
- {id:"gold",tier:"Gold",nick:"The Toast of the Town",amt:5000,ad:true,perks:["Two event tickets","Pre-event VIP reception for two","Tickets for four teachers in your name","Message or ad during the event","Auction website listing"],sum:"2 tickets, VIP reception for 2, and 4 teachers attend in your name."},
- {id:"silver",tier:"Silver",nick:"The Social Butterfly",amt:2500,ad:true,perks:["Two event tickets","Tickets for three teachers in your name","Message or ad during the event","Auction website listing"],sum:"2 tickets and 3 teachers attend in your name."},
- {id:"bronze",tier:"Bronze",nick:"The Best Plus-One",amt:1250,ad:false,perks:["Two event tickets","Tickets for two teachers in your name","Auction website listing"],sum:"2 tickets and 2 teachers attend in your name."}
+ {id:"platinum",tier:"Platinum",nick:"The Life of the Party",amt:10000,ded:8800,ad:true,perks:["Four event tickets","Pre-event VIP reception for four","Tickets for six teachers in your name","Message or ad during the event","Auction website listing"],sum:"4 tickets, VIP reception for 4, and 6 teachers attend in your name."},
+ {id:"gold",tier:"Gold",nick:"The Toast of the Town",amt:5000,ded:4150,ad:true,perks:["Two event tickets","Pre-event VIP reception for two","Tickets for four teachers in your name","Message or ad during the event","Auction website listing"],sum:"2 tickets, VIP reception for 2, and 4 teachers attend in your name."},
+ {id:"silver",tier:"Silver",nick:"The Social Butterfly",amt:2500,ded:1700,ad:true,perks:["Two event tickets","Tickets for three teachers in your name","Message or ad during the event","Auction website listing"],sum:"2 tickets and 3 teachers attend in your name."},
+ {id:"bronze",tier:"Bronze",nick:"The Best Plus-One",amt:1250,ded:950,ad:false,perks:["Two event tickets","Tickets for two teachers in your name","Auction website listing"],sum:"2 tickets and 2 teachers attend in your name."}
 ];
 const VENDOR={"company": "Red Coats, Inc.", "first": "Mack", "recommended": "gold", "tag": "Last year", "links": {}};
 const fmt=n=>"$"+n.toLocaleString("en-US");
@@ -248,7 +248,7 @@ LEVELS.forEach(l=>{
   b.type="button";b.className="level";b.id="lvl-"+l.id;b.dataset.id=l.id;
   b.innerHTML=(l.id===VENDOR.recommended?`<span class="tag">${VENDOR.tag}</span>`:'')+
    `<span class="amt">${fmt(l.amt)}</span><span class="tier">${l.tier} Patron</span><span class="nick">${l.nick}</span>`+
-   `<ul>${l.perks.map(p=>`<li>${p}</li>`).join("")}</ul><span class="ded">Tax-deductible: $[TBD]</span>`;
+   `<ul>${l.perks.map(p=>`<li>${p}</li>`).join("")}</ul><span class="ded">Tax-deductible: ${fmt(l.ded)}</span>`;
   b.addEventListener("click",()=>{sel=l.id;render()});
   box.appendChild(b);
 });
@@ -264,8 +264,8 @@ function render(){
   skip.disabled=!l.ad;t.setAttribute("aria-disabled",!l.ad);
   if(!l.ad)skip.checked=false;
   document.getElementById("dedLine").textContent=!l.ad
-    ?"Bronze doesn’t include an event ad. Tax-deductible amount: $[TBD]."
-    :skip.checked?"Ad skipped. Tax-deductible amount: $[TBD] + $500.":"Tax-deductible amount: $[TBD]. Skip the ad to add $500.";
+    ?`Bronze doesn’t include an event ad. Tax-deductible amount: ${fmt(l.ded)}.`
+    :skip.checked?`Ad skipped. Tax-deductible amount: ${fmt(l.ded+500)}.`:`Tax-deductible amount: ${fmt(l.ded)}. Skip the ad to raise it to ${fmt(l.ded+500)}.`;
   const sb=document.getElementById("sponsorBtn");sb.textContent=`Sponsor at ${l.tier} on BetterUnite`;sb.href=(VENDOR.links&&VENDOR.links[l.id])||"https://app.betterunite.com/clubwis";
   const subj=encodeURIComponent(`Club WIS ${l.tier} sponsorship pledge: ${VENDOR.company}`);
   const body=encodeURIComponent(`Hi Megan,\n\n${VENDOR.company} would like to pledge a ${l.tier} sponsorship (${fmt(l.amt)}) for Club WIS on April 17, 2027, payable by June 30, 2027.${l.ad&&skip.checked?" Please skip our event ad.":""}\n\nThanks,\n${VENDOR.first}`);
