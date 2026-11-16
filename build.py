@@ -31,11 +31,13 @@ WORDS = ["", "", "two", "three", "four", "five", "six", "seven", "eight", "nine"
 
 
 def years_phrase(raw):
-    """'3' -> 'for the past three years'; blank or 1 -> 'last spring'."""
+    """'3' -> 'for the past three years'; '2017' -> 'since 2017'; blank or 1 -> 'last spring'."""
     try:
         n = int(raw)
     except ValueError:
         return "last spring"
+    if n >= 1900:
+        return f"since {n}"
     if n < 2:
         return "last spring"
     return f"for the past {WORDS[n] if n < len(WORDS) else n} years"
