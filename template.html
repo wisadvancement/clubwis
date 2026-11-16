@@ -249,6 +249,7 @@ const LEVELS=[
  {id:"bronze",tier:"Bronze",nick:"The Best Plus-One",amt:1250,ded:950,ad:false,perks:["Two event tickets","Tickets for two teachers in your name","Auction website listing"],sum:"2 tickets and 2 teachers attend in your name."}
 ];
 const VENDOR={{VENDOR_JSON}};
+const LOG_URL={{LOG_URL}};
 const fmt=n=>"$"+n.toLocaleString("en-US");
 let sel=VENDOR.recommended;
 const box=document.getElementById("levels");
@@ -291,6 +292,12 @@ function render(){
   const body=encodeURIComponent(`Hi Megan,\n\n${VENDOR.company} would like to pledge a ${l.tier} sponsorship (${fmt(l.amt)}) for Club WIS on April 17, 2027, payable by June 30, 2027.${OPTS[ben()].mail(l)}\n\nThanks,\n${VENDOR.first}`);
   document.getElementById("pledgeBtn").href=`mailto:megan.connolly@wis.edu?subject=${subj}&body=${body}`;
 }
+function logClick(action){
+  if(!LOG_URL||!navigator.sendBeacon)return;
+  try{navigator.sendBeacon(LOG_URL,new URLSearchParams({slug:VENDOR.slug,company:VENDOR.company,level:sel,benefits:ben(),action}))}catch(e){}
+}
+document.getElementById("sponsorBtn").addEventListener("click",()=>logClick("betterunite"));
+document.getElementById("pledgeBtn").addEventListener("click",()=>logClick("pledge"));
 document.querySelectorAll(".copy").forEach(btn=>btn.addEventListener("click",()=>{
   const el=document.getElementById(btn.dataset.copy);
   const done=()=>{btn.textContent="Copied";setTimeout(()=>btn.textContent="Copy",1500)};

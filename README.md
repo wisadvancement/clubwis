@@ -16,6 +16,11 @@ The pages collect no data. All payments go through BetterUnite's checkout.
 2. Run `python build.py`
 3. Commit and push. `links.csv` lists each vendor's URL for Megan's outreach.
 
+## Responses
+Clicking "Sponsor on BetterUnite" or "Pledge now" logs the vendor, level, waiver choice and deductible amount to the
+*Club WIS 2027: Sponsor Page Responses* Google Sheet, through the Apps Script in `apps-script/log-response.gs`
+(setup steps are at the top of that file). It logs the click, not the payment: check BetterUnite for what was paid.
+
 ## Privacy
 - Root page redirects to wis.edu, so there's no index of vendors.
 - Every page has `noindex`; `robots.txt` blocks crawlers.

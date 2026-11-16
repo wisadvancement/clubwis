@@ -7,6 +7,8 @@ import csv, html, json, re, secrets, pathlib
 
 SITE = "https://wisadvancement.github.io/clubwis"   # change if the repo name differs
 LEVELS = ["platinum", "gold", "silver", "bronze"]
+# Apps Script web app URL that logs button clicks to the responses sheet (see apps-script/). Blank = no logging.
+LOG_URL = ""
 ROOT = pathlib.Path(__file__).parent
 TEMPLATE = (ROOT / "template.html").read_text(encoding="utf-8")
 
@@ -84,6 +86,7 @@ def main():
             "first": row.get("first_name", "").strip() or "friends",
             "recommended": rec,
             "tag": "Last year" if last == rec else "Recommended",
+            "slug": row["slug"],
             "links": {lv: row.get(f"link_{lv}", "").strip() for lv in LEVELS if row.get(f"link_{lv}", "").strip()},
         }
         page = (TEMPLATE
@@ -95,6 +98,7 @@ def main():
                 .replace("{{PS}}", f"\n    <p class=\"ps\">P.S. {sentence(ps)}</p>" if ps else "")
                 .replace("{{LOGO}}", logo_html(row, esc))
                 .replace("{{LOGO_SLIDE}}", logo_html(row, esc))
+                .replace("{{LOG_URL}}", json.dumps(LOG_URL))
                 .replace("{{VENDOR_JSON}}", json.dumps(vendor, ensure_ascii=False).replace("</", "<\\/")))
         assert "{{" not in page, f"{company}: unfilled placeholder"
         dest = ROOT / "p" / row["slug"]
