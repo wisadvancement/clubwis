@@ -39,7 +39,8 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    SpreadsheetApp.getActive().getSheetByName('Responses').appendRow([
+    const sheet = SpreadsheetApp.getActive().getSheetByName('Responses');
+    sheet.appendRow([
       new Date(),
       "'" + String(p.company || '').slice(0, 80),   // leading ' keeps it as plain text
       level.name,
@@ -48,8 +49,9 @@ function doPost(e) {
       benefit.ded(level),
       action,
       SITE + slug + '/',
-      p.benefits === 'all' ? '' : false,            // checkbox for Megan once the waiver is confirmed in writing
     ]);
+    // Checkbox for Megan to tick once the waiver is confirmed in writing
+    if (p.benefits !== 'all') sheet.getRange(sheet.getLastRow(), 9).insertCheckboxes();
   } finally {
     lock.releaseLock();
   }

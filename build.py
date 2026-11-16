@@ -81,6 +81,9 @@ def main():
         ps = row.get("ps", "").strip()
         back = " back" if last else ""
         ask = f"We would be delighted to welcome {esc}{back} as a {rec.title()} Patron."
+        for lv in LEVELS:
+            link = row.get(f"link_{lv}", "").strip()
+            assert not link or link.startswith("https://app.betterunite.com/"), f"{company}: link_{lv} must be a BetterUnite https link"
         vendor = {
             "company": company,
             "first": row.get("first_name", "").strip() or "friends",
