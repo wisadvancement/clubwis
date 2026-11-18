@@ -106,6 +106,7 @@ p{margin:0 0 14px}
 .opt b{font-weight:600;white-space:nowrap}
 .opt:has(input:checked){border-color:var(--navy);background:var(--pick)}
 .opt[hidden]{display:none}
+.panel.empty .benefits,.panel.empty #dedLine,.panel.empty .actions{display:none}
 .actions{display:grid;gap:10px;align-content:start}
 .btn{display:block;text-align:center;text-decoration:none;font-weight:600;padding:13px 18px;border-radius:8px;border:1.5px solid var(--navy);font-size:16px}
 .btn.primary{background:var(--navy);color:var(--navy-ink)}
@@ -173,7 +174,7 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
     <div class="mocks">
       <div class="mock">
         <div class="mock-cap">On the auction website</div>
-        <div class="listing"><div class="logo" aria-hidden="true">M</div><div><b>Modulex</b><small><span data-tier></span> Patron · Club WIS 2027</small></div></div>
+        <div class="listing"><div class="logo" aria-hidden="true">M</div><div><b>Modulex</b><small data-tier>Club WIS 2027 Patron</small></div></div>
       </div>
       <div class="mock">
         <div class="mock-cap">In the room, on event night</div>
@@ -274,9 +275,16 @@ boxes.forEach(b=>b.addEventListener("change",()=>{if(b.checked)boxes.forEach(o=>
 function render(){
   const l=LEVELS.find(x=>x.id===sel);
   document.querySelectorAll(".level").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===sel));
+  const panel=document.querySelector(".panel");
+  panel.classList.toggle("empty",!l);
+  if(!l){
+    document.getElementById("selTitle").textContent="Choose a level above";
+    document.getElementById("selSummary").textContent="Pick any level to see what’s included, your tax-deductible amount, and how to sponsor.";
+    return;
+  }
   document.getElementById("selTitle").textContent=`${l.tier} Patron · ${fmt(l.amt)}`;
   document.getElementById("selSummary").textContent=l.sum;
-  document.querySelectorAll("[data-tier]").forEach(e=>e.textContent=l.tier);
+  document.querySelectorAll("[data-tier]").forEach(e=>e.textContent=`${l.tier} Patron · Club WIS 2027`);
   document.querySelectorAll("[data-needs-ad]").forEach(o=>{o.hidden=!l.ad});
   if(!l.ad&&ben()==="adonly")boxes.forEach(b=>b.checked=false);
   Object.keys(OPTS).forEach(k=>{const e=document.querySelector(`[data-ded="${k}"]`);if(e)e.textContent=fmt(OPTS[k].ded(l))});

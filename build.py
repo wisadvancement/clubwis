@@ -65,8 +65,9 @@ def main():
             row["slug"] = f"{slugify(company)}-{secrets.token_hex(3)}"
             changed = True
         last = row.get("last_level", "").strip().lower()
-        rec = (row.get("recommended", "").strip().lower() or last or "silver")
-        assert rec in LEVELS, f"{company}: recommended level must be one of {LEVELS}"
+        # No recommended level and no last level = open ask: nothing preselected, sponsor picks.
+        rec = row.get("recommended", "").strip().lower() or (last if last in LEVELS else "")
+        assert not rec or rec in LEVELS, f"{company}: recommended level must be blank or one of {LEVELS}"
         esc = html.escape(company)
         thanks_note = row.get("thanks_note", "").strip()
         if last and last not in LEVELS:
@@ -93,14 +94,15 @@ def main():
         connection = row.get("connection", "").strip()
         ps = row.get("ps", "").strip()
         back = " back" if last else ""
-        ask = f"We would be delighted to welcome{back} {esc} as a {rec.title()} Patron."
+        ask = (f"We would be delighted to welcome{back} {esc} as a {rec.title()} Patron." if rec
+               else f"We would be delighted to welcome {esc} as a Club WIS sponsor.")
         for lv in LEVELS:
             link = row.get(f"link_{lv}", "").strip()
             assert not link or link.startswith("https://app.betterunite.com/"), f"{company}: link_{lv} must be a BetterUnite https link"
         vendor = {
             "company": company,
             "first": row.get("first_name", "").strip() or "friends",
-            "recommended": rec,
+            "recommended": rec or None,
             "tag": "Last year" if last == rec else "Recommended",
             "slug": row["slug"],
             "links": {lv: row.get(f"link_{lv}", "").strip() for lv in LEVELS if row.get(f"link_{lv}", "").strip()},

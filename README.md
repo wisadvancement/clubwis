@@ -5,7 +5,7 @@ The pages collect no data. All payments go through BetterUnite's checkout.
 
 ## Add or update vendors
 1. Add a row to `vendors.csv`. Leave `slug` blank; the build fills it in once and keeps it.
-   - `last_level` / `recommended`: platinum, gold, silver or bronze (`last_level` blank for new sponsors)
+   - `last_level` / `recommended`: platinum, gold, silver or bronze. Both blank = open ask: no level preselected, the sponsor picks one.
    - `logo`: filename of an image you've put in `logos/` (blank = initials monogram)
    - `years`: years sponsoring (`3` = "for the past three years"), or the first year (`2017` = "since 2017"). Blank or 1 = "last spring"
    - `last_level`: blank = first-time sponsor (invitation letter); platinum/gold/silver/bronze = renewal letter. Anything else (e.g. "advertisement") is skipped.
