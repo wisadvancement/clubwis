@@ -189,7 +189,7 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
     <div class="wrap">
       <p class="label">Sponsorship levels</p>
       <h2 id="lv">Choose your level</h2>
-      <p class="muted narrow">Every level sends WIS teachers to the event in your name, and every sponsorship counts toward Founder’s Circle.</p>
+      <p class="muted narrow">Every level sends WIS teachers to the event in your name, and every sponsorship counts toward Founders Circle.</p>
       <div class="levels" role="group" aria-label="Sponsorship levels" id="levels"></div>
 
       <div class="panel" aria-live="polite">
@@ -226,7 +226,7 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
     <p class="label">Other ways to take part</p>
     <h2 id="ways">Prefer a different route?</h2>
     <div class="ways">
-      <div class="way"><h3>Give to Fund-A-Student</h3><p class="muted">Make a gift straight to financial aid, at any amount. There are no tickets or benefits attached, so the full gift is tax-deductible.</p><a href="https://app.betterunite.com/clubwis/donate?fundaneed=1#section_fundaneed" target="_blank" rel="noopener">Make a Fund-A-Student gift →</a></div>
+      <div class="way"><h3>Give to Fund-A-Student</h3><p class="muted">Give any amount straight to financial aid. There are no tickets or benefits attached, so the full gift is tax-deductible.</p><a href="https://app.betterunite.com/clubwis/donate?fundaneed=1#section_fundaneed" target="_blank" rel="noopener">Make a Fund-A-Student gift →</a></div>
       <div class="way"><h3>Talk it through</h3><p class="muted">Questions about levels, timing, or your ad? Megan is happy to help.</p>
         <div class="copyrow"><code id="megan">megan.connolly@wis.edu</code><button class="copy" type="button" data-copy="megan">Copy</button></div>
         <div class="copyrow"><code>202-243-1821</code></div></div>
@@ -243,10 +243,10 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
 
 <script>
 const LEVELS=[
- {id:"platinum",tier:"Platinum",nick:"The Life of the Party",amt:10000,ded:8800,ad:true,perks:["Four event tickets","Pre-event VIP reception for four","Tickets for six teachers in your name","Message or ad during the event","Auction website listing"],sum:"4 tickets, VIP reception for 4, and 6 teachers attend in your name."},
- {id:"gold",tier:"Gold",nick:"The Toast of the Town",amt:5000,ded:4150,ad:true,perks:["Two event tickets","Pre-event VIP reception for two","Tickets for four teachers in your name","Message or ad during the event","Auction website listing"],sum:"2 tickets, VIP reception for 2, and 4 teachers attend in your name."},
- {id:"silver",tier:"Silver",nick:"The Social Butterfly",amt:2500,ded:1700,ad:true,perks:["Two event tickets","Tickets for three teachers in your name","Message or ad during the event","Auction website listing"],sum:"2 tickets and 3 teachers attend in your name."},
- {id:"bronze",tier:"Bronze",nick:"The Best Plus-One",amt:1250,ded:950,ad:false,perks:["Two event tickets","Tickets for two teachers in your name","Auction website listing"],sum:"2 tickets and 2 teachers attend in your name."}
+ {id:"platinum",tier:"Platinum",nick:"The Life of the Party",amt:10000,ded:8800,ad:true,perks:["Four event tickets","Pre-event VIP reception for four","Tickets for six teachers in your name","Message or ad during the event","Auction website listing"],sum:"Four guests at the event and the VIP reception, plus six teachers attending in your name."},
+ {id:"gold",tier:"Gold",nick:"The Toast of the Town",amt:5000,ded:4150,ad:true,perks:["Two event tickets","Pre-event VIP reception for two","Tickets for four teachers in your name","Message or ad during the event","Auction website listing"],sum:"Two guests at the event and the VIP reception, plus four teachers attending in your name."},
+ {id:"silver",tier:"Silver",nick:"The Social Butterfly",amt:2500,ded:1700,ad:true,perks:["Two event tickets","Tickets for three teachers in your name","Message or ad during the event","Auction website listing"],sum:"Two guests at the event, plus three teachers attending in your name."},
+ {id:"bronze",tier:"Bronze",nick:"The Best Plus-One",amt:1250,ded:950,ad:false,perks:["Two event tickets","Tickets for two teachers in your name","Auction website listing"],sum:"Two guests at the event, plus two teachers attending in your name."}
 ];
 const VENDOR={"company": "Smile Horizon Orthodontics", "first": "Maria", "recommended": null, "tag": "Last year", "slug": "smile-horizon-orthodontics-9b59c2", "links": {}};
 const LOG_URL="https://script.google.com/macros/s/AKfycbzTCr3nESVydYtNYm0pWtOHgDPiYCji6v7qtDyoZH7Tdi5m6RtcPtnjqM5nIvRy_pW3/exec";
@@ -268,7 +268,7 @@ const tix=l=>rec(l)?"tickets and VIP reception":"tickets";
 const all=l=>{const a=["tickets",rec(l)?"VIP reception":null,l.ad?"event ad":null].filter(Boolean);return a.length<3?a.join(" and "):a.slice(0,-1).join(", ")+", and "+a.at(-1)};
 const OPTS={
  all:   {ded:l=>l.ded,    mail:l=>""},
- adonly:{ded:l=>l.amt-AD, lbl:l=>`Keep the ad, waive ${tix(l)}`, mail:l=>` We'd like to waive our event ${tix(l)} and keep our event ad.`},
+ adonly:{ded:l=>l.amt-AD, lbl:l=>`Keep the ad, waive ${tix(l)}`, mail:l=>` We'd like to keep our event ad and waive our event ${tix(l)}.`},
  none:  {ded:l=>l.amt,    lbl:l=>"Waive all benefits", mail:l=>` We'd like to waive all benefits (${all(l)}) for a full deduction.`}
 };
 const boxes=[...document.querySelectorAll('input[name="ben"]')];
@@ -292,11 +292,11 @@ function render(){
   Object.keys(OPTS).forEach(k=>{const e=document.querySelector(`[data-ded="${k}"]`);if(e)e.textContent=fmt(OPTS[k].ded(l))});
   document.querySelectorAll("[data-lbl]").forEach(e=>e.textContent=OPTS[e.dataset.lbl].lbl(l));
   document.getElementById("dedLine").textContent=ben()==="all"
-    ?`Tax-deductible amount: ${fmt(l.ded)} with all benefits. Teachers attend in your name and your auction listing stays either way.`
-    :`Tax-deductible amount: ${fmt(OPTS[ben()].ded(l))}. Teachers still attend in your name and your auction listing stays. We’ll confirm the waiver in writing.`;
+    ?`Tax-deductible amount: ${fmt(l.ded)} with all benefits. Teachers attend in your name, and your auction listing stays either way.`
+    :`Tax-deductible amount: ${fmt(OPTS[ben()].ded(l))}. Teachers still attend in your name, and your auction listing stays. We’ll confirm the waiver in writing.`;
   const sb=document.getElementById("sponsorBtn");sb.textContent=`Sponsor at ${l.tier} on BetterUnite`;sb.href=(VENDOR.links&&VENDOR.links[l.id])||"https://app.betterunite.com/clubwis";
   const subj=encodeURIComponent(`Club WIS ${l.tier} sponsorship pledge: ${VENDOR.company}`);
-  const body=encodeURIComponent(`Hi Megan,\n\n${VENDOR.company} would like to pledge a ${l.tier} sponsorship (${fmt(l.amt)}) for Club WIS on April 17, 2027, payable by June 30, 2027.${OPTS[ben()].mail(l)}\n\nThanks,\n${VENDOR.first}`);
+  const body=encodeURIComponent(`Hi Megan,\n\n${VENDOR.company} would like to pledge a ${l.tier} sponsorship (${fmt(l.amt)}) for Club WIS on April 17, 2027, payable by June 30, 2027.${OPTS[ben()].mail(l)}\n\nThanks,\n${VENDOR.first==="friends"?VENDOR.company:VENDOR.first}`);
   document.getElementById("pledgeBtn").href=`mailto:megan.connolly@wis.edu?subject=${subj}&body=${body}`;
 }
 function logClick(action){
