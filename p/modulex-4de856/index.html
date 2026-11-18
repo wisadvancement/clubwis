@@ -6,7 +6,7 @@
 <title>Club WIS 2027 · Sponsorship for Modulex</title>
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:title" content="Club WIS: Cocktails for a Cause · Sponsorship for Modulex">
-<meta property="og:description" content="Friday, April 17, 2027 at Tregaron. Benefiting financial aid at Washington International School.">
+<meta property="og:description" content="Friday 17 April 2027 at Tregaron. Benefiting financial aid at Washington International School.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
@@ -153,7 +153,7 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
   <img class="hero-art" src="../../assets/clubwis-hero.jpg" alt="Club WIS: Cocktails for a Cause. An evening to support financial aid at WIS. Doors open April 17, 2027." width="1800" height="1060">
   <div class="hero-bar"><div class="wrap">
     <div class="prepared"><span class="eyebrow">Sponsorship proposal prepared for</span><strong>Modulex</strong></div>
-    <div class="facts"><span>Friday, April 17, 2027</span><span>Tregaron campus</span></div>
+    <div class="facts"><span>Friday 17 April 2027</span><span>Tregaron campus</span></div>
   </div></div>
 </header>
 
@@ -182,7 +182,7 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
         <div class="slide"><div><div class="logo" aria-hidden="true">M</div><p>“Cheers to financial aid at WIS.”</p><span>Modulex</span></div></div>
       </div>
     </div>
-    <p class="muted mock-note">These previews are stylized to give a sense of placement. Final listings and event-night recognition will follow the event’s design and may look different.</p>
+    <p class="muted mock-note">These previews are stylised to give a sense of placement. Final listings and event-night recognition will follow the event’s design and may look different.</p>
   </section>
 
   <section class="levels-band" aria-labelledby="lv">
@@ -206,7 +206,7 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
         </div>
         <div class="actions">
           <a class="btn primary" id="sponsorBtn" href="https://app.betterunite.com/clubwis" target="_blank" rel="noopener">Sponsor on BetterUnite</a>
-          <a class="btn" id="pledgeBtn" href="#" target="_blank" rel="noopener">Pledge now, pay by June 30</a>
+          <a class="btn" id="pledgeBtn" href="#" target="_blank" rel="noopener">Pledge now, pay by 30 June</a>
           <p class="secure"><span aria-hidden="true">🔒</span><span>Payments go through BetterUnite’s secure checkout. This page never asks for card details.</span></p>
         </div>
       </div>
@@ -296,7 +296,7 @@ function render(){
     :`Tax-deductible amount: ${fmt(OPTS[ben()].ded(l))}. Teachers still attend in your name, and your auction listing stays. We’ll confirm the waiver in writing.`;
   const sb=document.getElementById("sponsorBtn");sb.textContent=`Sponsor at ${l.tier} on BetterUnite`;sb.href=(VENDOR.links&&VENDOR.links[l.id])||"https://app.betterunite.com/clubwis";
   const subj=encodeURIComponent(`Club WIS ${l.tier} sponsorship pledge: ${VENDOR.company}`);
-  const body=encodeURIComponent(`Hi Megan,\n\n${VENDOR.company} would like to pledge a ${l.tier} sponsorship (${fmt(l.amt)}) for Club WIS on April 17, 2027, payable by June 30, 2027.${OPTS[ben()].mail(l)}\n\nThanks,\n${VENDOR.first==="friends"?VENDOR.company:VENDOR.first}`);
+  const body=encodeURIComponent(`Hi Megan,\n\n${VENDOR.company} would like to pledge a ${l.tier} sponsorship (${fmt(l.amt)}) for Club WIS on 17 April 2027, payable by 30 June 2027.${OPTS[ben()].mail(l)}\n\nThanks,\n${VENDOR.first==="friends"?VENDOR.company:VENDOR.first}`);
   document.getElementById("pledgeBtn").href=`mailto:megan.connolly@wis.edu?subject=${subj}&body=${body}`;
 }
 function logClick(action){
