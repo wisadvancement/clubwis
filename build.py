@@ -115,7 +115,6 @@ def main():
                 .replace("{{COMPANY}}", esc)
                 .replace("{{FIRST}}", html.escape(vendor["first"]))
                 .replace("{{THANKS}}", thanks)
-                .replace("{{AUCTION}}", "auction" if last else "an auction")
                 .replace("{{REMAINS}}", "remains" if last else "is")
                 .replace("{{EVENT_INTRO}}", "our spring benefit returns as" if last else "we host our annual spring benefit,")
                 .replace("{{CONNECTION}}", f"\n    <p>{sentence(connection)}</p>" if connection else "")
