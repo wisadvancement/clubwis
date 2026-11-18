@@ -106,6 +106,7 @@ p{margin:0 0 14px}
 .opt b{font-weight:600;white-space:nowrap}
 .opt:has(input:checked){border-color:var(--navy);background:var(--pick)}
 .opt[hidden]{display:none}
+.mock-note{font-size:13px;font-style:italic;margin-top:14px}
 .panel.empty .benefits,.panel.empty #dedLine,.panel.empty .actions{display:none}
 .actions{display:grid;gap:10px;align-content:start}
 .btn{display:block;text-align:center;text-decoration:none;font-weight:600;padding:13px 18px;border-radius:8px;border:1.5px solid var(--navy);font-size:16px}
@@ -161,8 +162,8 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
     <p class="label">A note from Suzanna</p>
     <p>Dear {{FIRST}},</p>
     <p>{{THANKS}}</p>
-    <p>On 17 April, {{EVENT_INTRO}} <strong>Club WIS: Cocktails for a Cause</strong> — an evening of cocktails, dancing, and auction at Tregaron. It remains our most important fundraiser for financial aid, which brings students of every background and nationality into the same classrooms.</p>{{CONNECTION}}
-    <p>{{ASK}} Below you can see how your business would appear on the night and choose the level that suits you.</p>
+    <p>On 17 April, {{EVENT_INTRO}} <strong>Club WIS: Cocktails for a Cause</strong> — an evening of cocktails, dancing, and {{AUCTION}} at Tregaron. It {{REMAINS}} our most important fundraiser for financial aid, which brings students of every background and nationality into the same classrooms.</p>{{CONNECTION}}
+    <p>{{ASK}}</p>
     <p>With gratitude,</p>
     <div class="sig"><b>Suzanna Jemsby</b><span class="muted">Head of School, Washington International School</span></div>{{PS}}
   </section>
@@ -181,6 +182,7 @@ details.notes td,details.notes th{border-top:1px solid var(--line);padding:6px 8
         <div class="slide"><div>{{LOGO_SLIDE}}<p>“Cheers to financial aid at WIS.”</p><span>{{COMPANY}}</span></div></div>
       </div>
     </div>
+    <p class="muted mock-note">These previews are stylized to give a sense of placement. Final listings and event-night recognition will follow the event’s design and may look different.</p>
   </section>
 
   <section class="levels-band" aria-labelledby="lv">

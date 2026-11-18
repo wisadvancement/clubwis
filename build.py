@@ -85,7 +85,7 @@ def main():
             thanks = f"Thank you for standing with WIS {years_phrase(row.get('years', '').strip())}. {sentence(thanks_note)}"
         else:
             # New-sponsor letter: an invitation; thanks_note is an optional extra sentence.
-            thanks = (f"I would like to invite {esc} to join us as a sponsor this spring. "
+            thanks = (f"I would like to invite {esc} to join us as an event sponsor this spring. "
                       "Washington International School is a PreK–12 bilingual international school "
                       "with campuses in Georgetown and Cleveland Park.")
             if thanks_note:
@@ -96,6 +96,10 @@ def main():
         back = " back" if last else ""
         ask = (f"We would be delighted to welcome{back} {esc} as a {rec.title()} Patron." if rec
                else f"We would be delighted to welcome {esc} as a Club WIS sponsor.")
+        if last:
+            ask += " Below you can see how your business would appear on the night and choose the level that suits you."
+        else:
+            ask += " Below you can learn more, see how your business would appear on the night, and — hopefully — partner with us!"
         for lv in LEVELS:
             link = row.get(f"link_{lv}", "").strip()
             assert not link or link.startswith("https://app.betterunite.com/"), f"{company}: link_{lv} must be a BetterUnite https link"
@@ -111,6 +115,8 @@ def main():
                 .replace("{{COMPANY}}", esc)
                 .replace("{{FIRST}}", html.escape(vendor["first"]))
                 .replace("{{THANKS}}", thanks)
+                .replace("{{AUCTION}}", "auction" if last else "an auction")
+                .replace("{{REMAINS}}", "remains" if last else "is")
                 .replace("{{EVENT_INTRO}}", "our spring benefit returns as" if last else "we host our annual spring benefit,")
                 .replace("{{CONNECTION}}", f"\n    <p>{sentence(connection)}</p>" if connection else "")
                 .replace("{{ASK}}", ask)
