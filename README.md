@@ -8,7 +8,8 @@ The pages collect no data. All payments go through BetterUnite's checkout.
    - `last_level` / `recommended`: platinum, gold, silver or bronze (`last_level` blank for new sponsors)
    - `logo`: filename of an image you've put in `logos/` (blank = initials monogram)
    - `years`: years sponsoring (`3` = "for the past three years"), or the first year (`2017` = "since 2017"). Blank or 1 = "last spring"
-   - `thanks_note`: **required** — one specific sentence thanking them for last year. Vendors without one are skipped.
+   - `last_level`: blank = first-time sponsor (invitation letter); platinum/gold/silver/bronze = renewal letter. Anything else (e.g. "advertisement") is skipped.
+   - `thanks_note`: renewals — **required**, one specific sentence thanking them for last year. New sponsors — optional extra sentence after the invitation.
    - `connection`: optional — a WIS family, alumni or neighbourhood tie. Blank drops the paragraph.
    - `ps`: optional — a personal postscript. Blank drops it.
    - Letter copy is in Suzanna's voice: use British spelling in these fields.

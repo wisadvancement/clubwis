@@ -68,14 +68,27 @@ def main():
         rec = (row.get("recommended", "").strip().lower() or last or "silver")
         assert rec in LEVELS, f"{company}: recommended level must be one of {LEVELS}"
         esc = html.escape(company)
-        # Required for the renewal letter: one specific sentence of thanks.
         thanks_note = row.get("thanks_note", "").strip()
-        if not thanks_note:
-            print(f"SKIP   {company:35s} needs a thanks_note (page left as is)")
+        if last and last not in LEVELS:
+            print(f"SKIP   {company:35s} last_level '{last}' isn't a sponsorship level (page left as is)")
             if (ROOT / "p" / row["slug"] / "index.html").exists():
                 out_links.append({"company": company, "url": f"{SITE}/p/{row['slug']}/"})
             continue
-        thanks = f"Thank you for standing with WIS {years_phrase(row.get('years', '').strip())}. {sentence(thanks_note)}"
+        if last:
+            # Renewal letter: requires one specific sentence of thanks.
+            if not thanks_note:
+                print(f"SKIP   {company:35s} needs a thanks_note (page left as is)")
+                if (ROOT / "p" / row["slug"] / "index.html").exists():
+                    out_links.append({"company": company, "url": f"{SITE}/p/{row['slug']}/"})
+                continue
+            thanks = f"Thank you for standing with WIS {years_phrase(row.get('years', '').strip())}. {sentence(thanks_note)}"
+        else:
+            # New-sponsor letter: an invitation; thanks_note is an optional extra sentence.
+            thanks = (f"I would like to invite {esc} to join us as a sponsor this spring. "
+                      "Washington International School is a PreK–12 bilingual international school "
+                      "with campuses in Georgetown and Cleveland Park.")
+            if thanks_note:
+                thanks += " " + sentence(thanks_note)
         # Optional: drop out entirely when blank.
         connection = row.get("connection", "").strip()
         ps = row.get("ps", "").strip()
@@ -96,6 +109,7 @@ def main():
                 .replace("{{COMPANY}}", esc)
                 .replace("{{FIRST}}", html.escape(vendor["first"]))
                 .replace("{{THANKS}}", thanks)
+                .replace("{{EVENT_INTRO}}", "our spring benefit returns as" if last else "we host our annual spring benefit,")
                 .replace("{{CONNECTION}}", f"\n    <p>{sentence(connection)}</p>" if connection else "")
                 .replace("{{ASK}}", ask)
                 .replace("{{PS}}", f"\n    <p class=\"ps\">P.S. {sentence(ps)}</p>" if ps else "")
